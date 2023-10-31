@@ -11,7 +11,13 @@ func makeCardContent(index: Int) -> String {
     return "😃"
 }
 
-class EmojiMemoryGame {
+// MVVM
+/**
+    View --> ViewModel --> Model  :
+    View <-- ViewModel 
+    用户点击View，View持有ViewModel，View修改ViewModel中的数据， 同时View在监听ViewModel中的数据变化，如有变化，即刷新View自身
+ */
+class EmojiMemoryGame : ObservableObject {
     
     static let emojis = ["🚕", "🛺", "🚔", "🚂", "🚗", "🚎", "🏎️", "🚓",
                              "🚑", "🚒", "🚐", "🛻", "🚚", "🚛", "🚜", "🚍",
@@ -24,10 +30,16 @@ class EmojiMemoryGame {
         })
     }
     
-    private var model: MemoryGame<String> = createMemoryGame()
+    @Published private var model: MemoryGame<String> = createMemoryGame()
     
     var cards: Array<MemoryGame<String>.Card> {
-        return model.cards
+        model.cards
+    }
+    
+    func choose(_ card: MemoryGame<String>.Card) {
+//        objectWillChange.send()
+        model.choose(card)
+//        print("viewmodel: choose...")
     }
     
     
