@@ -12,7 +12,7 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var game: EmojiMemoryGame
     
     var body: some View {
-        
+        /*
         ScrollView {
             // [GridItem(), GridItem(), GridItem()] :  固定三行
             // [GridItem(.adaptive(minimum: 65))] : 最小宽度为65，根据屏幕（横向、竖向）自适应显示的item数量
@@ -25,6 +25,21 @@ struct EmojiMemoryGameView: View {
                         }
                 }
             }
+        }
+        .foregroundColor(.red)
+        .padding(.horizontal)*/
+        
+        AspectVGrid(items: game.cards, aspectRatio: 2/3) { card in
+            if card.isMatched && !card.isFaceUp {
+                Rectangle().opacity(0)
+            } else {
+                CardView(card)
+                    .padding(4)
+                    .onTapGesture {
+                        game.choose(card)
+                    }
+            }
+            
         }
         .foregroundColor(.red)
         .padding(.horizontal)
@@ -47,6 +62,9 @@ struct CardView : View {
                 if card.isFaceUp {
                     shape.fill().foregroundColor(.white)
                     shape.strokeBorder(lineWidth: DrawConstants.lineWidth) // stroke:向外延伸 | strokeBorder:向内延伸
+//                    Circle().padding(5).opacity(0.5)
+                    Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 110-90))
+                        .padding(5).opacity(0.5)
                     Text(card.content)
 //                        .font(.largeTitle)
                         .font(font(in: geometry.size))
@@ -65,14 +83,16 @@ struct CardView : View {
     }
     
     private struct DrawConstants {
-        static let cornerRadius: CGFloat = 20
+        static let cornerRadius: CGFloat = 10
         static let lineWidth: CGFloat = 3
-        static let fontScale: CGFloat = 0.8
+        static let fontScale: CGFloat = 0.7
     }
 }
 
 #Preview {
-    EmojiMemoryGameView(game: EmojiMemoryGame())
+    let game =  EmojiMemoryGame()
+    game.choose(game.cards.first!)
+    return EmojiMemoryGameView(game: game)
 //        .preferredColorScheme(.light)
 //    ContentView()
 //        .preferredColorScheme(.dark)
