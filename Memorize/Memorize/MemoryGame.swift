@@ -42,6 +42,10 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
+    mutating func shuffle() {
+        cards.shuffle()
+    }
+    
     // mutating: 修改整个struct的值
     mutating func choose(_ card: Card){
         // version 1
@@ -92,6 +96,8 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
             cards.append(Card(content: content, id: pairIndex*2))
             cards.append(Card(content: content, id: pairIndex*2+1))
         }
+        
+        cards.shuffle()
     }
     
     struct Card: Identifiable {

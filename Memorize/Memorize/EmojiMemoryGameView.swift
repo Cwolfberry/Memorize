@@ -29,20 +29,39 @@ struct EmojiMemoryGameView: View {
         .foregroundColor(.red)
         .padding(.horizontal)*/
         
+        VStack {
+            gameBody
+            shuffle
+        }
+        .padding(.horizontal)
+    }
+    
+    var gameBody: some View {
         AspectVGrid(items: game.cards, aspectRatio: 2/3) { card in
             if card.isMatched && !card.isFaceUp {
-                Rectangle().opacity(0)
+//                Rectangle().opacity(0)
+                Color.clear
             } else {
                 CardView(card)
                     .padding(4)
+                    .transition(AnyTransition.scale.animation(Animation.easeInOut(duration: 2)))
                     .onTapGesture {
-                        game.choose(card)
+                        withAnimation/*(.easeInOut(duration: 3))*/ {
+                            game.choose(card)
+                        }
                     }
             }
             
         }
         .foregroundColor(.red)
-        .padding(.horizontal)
+    }
+    
+    var shuffle : some View {
+        Button("Shuffle") {
+            withAnimation {
+                game.shuffle()
+            }
+        }
     }
 
 }

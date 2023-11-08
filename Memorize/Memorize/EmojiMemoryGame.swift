@@ -44,5 +44,8 @@ class EmojiMemoryGame : ObservableObject {
 //        print("viewmodel: choose...")
     }
     
+    func shuffle() {
+        model.shuffle()
+    }
     
 }
